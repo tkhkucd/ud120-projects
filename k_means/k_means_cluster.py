@@ -48,8 +48,10 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.)
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 ="total_payments" # added for 21.quiz:clustering 3 features, TKHKUCD
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
+#features_list = [poi, feature_1, feature_2, feature_3] #added for 21.quiz:clustering 3 features, TKHKUCD
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
@@ -59,14 +61,75 @@ poi, finance_features = targetFeatureSplit( data )
 ### for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
 for f1, f2 in finance_features:
+#for f1, f2, f3 in finance_features: #added for 21.quiz:clustering 3 features, TKHKUCD
     plt.scatter( f1, f2 )
 plt.show()
 
+#for quiz22, stock option range
+max_stk_opt = 0
+min_stk_opt = 10000000
+
+for key_name in data_dict.keys():
+    #print(key_name)
+    if (data_dict[key_name]['exercised_stock_options']!="NaN"):
+        if (data_dict[key_name]['exercised_stock_options'] > max_stk_opt) :
+            name_of_max_stk_opt = key_name
+            max_stk_opt = data_dict[key_name]['exercised_stock_options']
+
+        if (data_dict[key_name]['exercised_stock_options'] < min_stk_opt):
+            name_of_min_stk_opt = key_name
+            min_stk_opt = data_dict[key_name]['exercised_stock_options']
+
+print("max stk_opt", max_stk_opt, "name", name_of_max_stk_opt)
+print("min_stk_opt", min_stk_opt, "name", name_of_min_stk_opt)
+# end quiz22
+
+#for quiz23, salary range
+max_salary = 0
+min_salary = 10000000
+
+for key_name in data_dict.keys():
+    #print(key_name)
+    if (data_dict[key_name]['salary']!="NaN"):
+        if (data_dict[key_name]['salary'] > max_salary) :
+            name_of_max_salary = key_name
+            max_salary = data_dict[key_name]['salary']
+
+        if (data_dict[key_name]['salary'] < min_salary):
+            name_of_min_salary = key_name
+            min_salary = data_dict[key_name]['salary']
+
+print("max_salary", max_salary, "name", name_of_max_salary)
+print("min_salary", min_salary, "name", name_of_min_salary)
+# end quiz23
+
+# for quiz24 clusterint change
+#f1 = "salary"
+#f2 = "exercised_stock_options"
+#f3 ="total_payments" # added for 21.quiz:clustering 3 features, TKHKUCD
+print("Before Scaling")
+print(finance_features)
+
+finance_features.sort(key=lambda f:f[0])
+while True:
+    if finance_features[0][0]>=min_salary: #check f1(Salary)
+        break
+    finance_features.pop(0)
+
+finance_features.sort(key=lambda f:f[1])
+while True:
+    if finance_features[0][1]>=min_stk_opt: #check f1(Salary)
+        break
+    finance_features.pop(0)
+
+print("After Scaling")
+print(finance_features)
+
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
-
-
-
+from sklearn.cluster import KMeans
+clf=KMeans(n_clusters=2)
+pred=clf.fit_predict(finance_features)
 
 ### rename the "name" parameter when you change the number of features
 ### so that the figure gets saved to a different file
