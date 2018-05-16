@@ -107,8 +107,8 @@ print("min_salary", min_salary, "name", name_of_min_salary)
 #f1 = "salary"
 #f2 = "exercised_stock_options"
 #f3 ="total_payments" # added for 21.quiz:clustering 3 features, TKHKUCD
-print("Before Scaling")
-print(finance_features)
+#print("Before Scaling")
+#print(finance_features)
 
 finance_features.sort(key=lambda f:f[0])
 while True:
@@ -122,8 +122,8 @@ while True:
         break
     finance_features.pop(0)
 
-print("After Scaling")
-print(finance_features)
+#print("After Scaling")
+#print(finance_features)
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
@@ -137,3 +137,12 @@ try:
     Draw(pred, finance_features, poi, mark_poi=False, name="clusters.pdf", f1_name=feature_1, f2_name=feature_2)
 except NameError:
     print( "no predictions object named pred found, no clusters to plot")
+
+#Lesson10 Feature Scaling
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(finance_features)
+print(scaler.data_max_)
+print(scaler.data_min_)
+
+print(scaler.transform([[200000, 1000000]]))
