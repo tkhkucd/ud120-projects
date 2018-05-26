@@ -74,6 +74,13 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
             replaced_words = replaced_words.replace("chris", "")
             replaced_words = replaced_words.replace("germani", "")
 
+            # added for Lesson12, Quiz29, tkhkucd 05/24/2018
+            replaced_words = replaced_words.replace("sshacklensf", "")
+
+            #added for Lesson12, quiz31, tkhkucd 05/24/2018
+            replaced_words = replaced_words.replace("cgermannsf", "")
+
+
             ### append the text to word_data
             word_data.append(replaced_words)
 
